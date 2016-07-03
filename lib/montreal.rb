@@ -21,9 +21,8 @@ module Montreal
         define_singleton_method(k) do
           if !instance_variable_get("@#{k}")
             pool = ::ConnectionPool.new(size: pool_size, timeout: timeout) do
-              config = config.delete_if { |key, _| ["host", "port", "db"].include?(key)}
-              config["host"] ||= 'localhost'
-              config["port"] ||= 6379
+              v["host"] ||= 'localhost'
+              v["port"] ||= 6379
               Redis.new(v)
             end
             instance_variable_set("@#{k}", pool)
